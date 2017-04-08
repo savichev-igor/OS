@@ -34,7 +34,6 @@ set_cursor() {
     tput cup $1 $2
 }
 
-# Может отрисовать немного криво, каюсь
 init_field() {
     clear
 
@@ -137,38 +136,43 @@ win_6=(x_0_2 x_1_2 x_2_2)
 win_7=(x_0_0 x_1_1 x_2_2)
 win_8=(x_0_2 x_1_1 x_2_0)
 
+game_logic() {
+    do_move $a $b $2
+    if $2; then
+        check_diff_arrays ${current_moves_x[@]}
+    else
+        check_diff_arrays ${current_moves_o[@]}
+    fi
+    if [[ -z $check_win ]]; then
+        echo $1
+        sleep 3
+        clear
+        exit
+    fi
+    waiting=$2
+}
+
 while true
     do
         if $waiting; then
             stty -echo
-
             if read a b < $input_pipe; then
-                do_move $a $b false
-
-                check_diff_arrays ${current_moves_o[@]}
-                if [[ -z $check_win ]]; then
-                    echo 'YOU LOST !'
-                    exit
-                fi
-
-                waiting=false
+                game_logic 'YOU LOST !' false
             fi
         else
             stty echo
             echo 'Your move:'
             cur_line=$((cur_line + 2))
-
             if read a b; then
-                do_move $a $b true
-                echo $a $b > $output_pipe
-
-                check_diff_arrays ${current_moves_x[@]}
-                if [[ -z $check_win ]]; then
-                    echo 'YOU WIN !'
-                    exit
+                if ! [[ $a =~ ^[0-9]+$ ]] || ! [[ $b =~ ^[0-9]+$ ]] ||
+                    [[ $a -gt 2 ]] || [[ $a -lt 0 ]] ||
+                    [[ $b -gt 2 ]] || [[ $b -lt 0 ]]; then
+                    echo 'Wrong move ! Try again...'
+                    cur_line=$((cur_line + 1))
+                else
+                    echo $a $b > $output_pipe
+                    game_logic 'YOU WIN !' true
                 fi
-
-                waiting=true
             fi
         fi
     done
