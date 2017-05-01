@@ -50,7 +50,6 @@ void parse_file(char *file_name, GArray *array) {
                     memcpy(buffer, line + match.rm_so, len_match);
 
                     int num = atoi(buffer);
-                    printf("%d\n", num);
 
                     g_array_append_val(array, num);
 
