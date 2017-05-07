@@ -43,9 +43,6 @@ void show() {
     fflush(stdout);
 }
 
-/**
- * Делает один шаг развития.
- */
 void evolve() {
     unsigned new[h][w];
 
@@ -76,16 +73,10 @@ void evolve() {
     }
 }
 
-/**
- * Инициализация игры.
- */
 void init_game() {
     for_xy univ[y][x] = rand() < RAND_MAX / 10 ? 1 : 0;
 }
 
-/**
- * Цикл игры с записью промежуточного состояния в файл.
- */
 void game() {
     init_game();
 
