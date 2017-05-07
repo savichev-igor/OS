@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
 
     switch(fork()) {
         case -1:
-            print_error("Fork", true);
+            print_error("fork", true);
         case 0:
             game();
         default:
