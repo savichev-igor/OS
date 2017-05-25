@@ -75,10 +75,6 @@ int main(int argc, char *argv[]) {
 
     while (is_file_esists(global_full_path_lock_file_name)) {}
 
-    printf("%s\n", global_file_name);
-    printf("%s\n", global_lock_file_name);
-    printf("%s\n", global_full_path_lock_file_name);
-
     edit_file(argc, argv);
 
     return 0;
