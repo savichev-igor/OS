@@ -192,7 +192,9 @@ void start_programs() {
 
 void HUP_handler() {
     for (int i = 0; i < proc_numbers; i++) {
-        kill(pid_list[i], SIGKILL);
+        if (pid_list[i] > 0) {
+            kill(pid_list[i], SIGKILL);
+        }
     }
 
     start_programs();
